@@ -15,7 +15,26 @@
 	<script>
 		M.AutoInit();
 	</script>
+	<script>
+		function cutTxt(){
+        // Select
+        var text="";
+        if(window.getSelection){
+        	text=window.getSelection().toString();
+        	document.execCommand("cut");
+        }
 
+        document.getElementById("answer").select();
+
+        // Cut
+        
+        
+      }
+       async function paste () {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("answer").value = text;
+      }
+	</script>
 	<meta charset="UTF-8">
 	<title>rendum practice page</title>
 </head>
@@ -30,8 +49,8 @@
 		<div class="container section" style="width: 100%;">
 			<div class="container row">
 				<div class="col s6 offset-s6">
-					<button id="cut" class="waves-effect waves-light btn">Cut</button>
-					<button id="paste" class="waves-effect waves-light btn">Paste</button>
+					<button id="cut" class="waves-effect waves-light btn" onclick="cutTxt()">Cut</button>
+					<button id="paste" class="waves-effect waves-light btn" onclick="paste()">Paste</button>
 					<button id="undo" class="waves-effect waves-light btn">Undo</button>
 				</div>
 			</div>
