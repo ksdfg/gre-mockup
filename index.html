@@ -2,6 +2,10 @@
 <html lang="en">
 
 <head>
+	<!-- jQuery slim minified -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -11,30 +15,6 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="style.css">
 
-	<!-- Initialize everything -->
-	<script>
-		M.AutoInit();
-	</script>
-	<script>
-		function cutTxt(){
-        // Select
-        var text="";
-        if(window.getSelection){
-        	text=window.getSelection().toString();
-        	document.execCommand("cut");
-        }
-
-        document.getElementById("answer").select();
-
-        // Cut
-        
-        
-      }
-       async function paste () {
-        const text = await navigator.clipboard.readText();
-        document.getElementById("answer").value = text;
-      }
-	</script>
 	<meta charset="UTF-8">
 	<title>rendum practice page</title>
 </head>
@@ -42,15 +22,93 @@
 <body>
 	<div class="container">
 		<div class="container section right-align" style="width: 100%;">
-			<h5 id="time">Time</h5>
+			<div class="input-field">
+				<input id="time" type="text">
+				<label for="time">Time</label>
+			</div>
 			<button id="timer" class="waves-effect waves-light btn-large">Start</button>
+
+			<script>
+				var counter = null;
+
+				$("#timer").click(function (e) {
+					$("#timer").removeClass("pulse");
+					$("#time").attr("disabled", false);
+					let action = $("#timer").text();
+
+					if (action === "Start") {
+						$("#time").attr("disabled", true);
+
+						counter = setInterval(function () {
+							let time = $("#time").val().split(":");
+
+							if (time.length !== 2 || isNaN(Number(time[0])) || isNaN(Number(time[1]))) {
+								$("#time").attr("disabled", false);
+								clearInterval(counter);
+								$("#timer").text("Start");
+								$("#timer").removeClass("red");
+								M.toast({ html: "Please give valid time!", classes: "red rounded" })
+							} else {
+								let minutes = Number(time[0]);
+								let seconds = Number(time[1]);
+								if (seconds === 0) {
+									if (minutes === 0) {
+										$("#time").attr("disabled", false);
+										clearInterval(counter);
+										$("#timer").text("Start");
+										$("#timer").removeClass("red");
+										$("#timer").addClass("pulse");
+									} else {
+										seconds = 59;
+										minutes -= 1;
+									}
+								} else {
+									seconds -= 1;
+								}
+								$("#time").val(minutes + ":" + seconds)
+							}
+						}, 1000);
+						$("#timer").text("Stop");
+						$("#timer").addClass("red")
+					} else {
+						clearInterval(counter);
+						$("#timer").text("Start");
+						$("#timer").removeClass("red");
+					}
+				});
+			</script>
 		</div>
 
 		<div class="container section" style="width: 100%;">
 			<div class="container row">
 				<div class="col s6 offset-s6">
-					<button id="cut" class="waves-effect waves-light btn" onclick="cutTxt()">Cut</button>
-					<button id="paste" class="waves-effect waves-light btn" onclick="paste()">Paste</button>
+					<button id="cut" class="waves-effect waves-light btn">Cut</button>
+					<script>
+
+						$("#cut").click(
+							function (e) {
+								var text = "";
+								console.log("nyan");
+								if (window.getSelection) {
+									console.log("meow");
+									text = window.getSelection().toString();
+									document.execCommand("cut", false, "");
+								}
+							}
+						)
+					</script>
+
+					<button id="paste" class="waves-effect waves-light btn">Paste</button>
+					<script>
+						$("#paste").click(
+							async function (e) {
+								console.log("woof")
+								const text = await navigator.clipboard.readText();
+								document.getElementById("answer").value = text;
+							}
+						)
+					</script>
+
 					<button id="undo" class="waves-effect waves-light btn">Undo</button>
 				</div>
 			</div>
