@@ -1,0 +1,14 @@
+h5 {
+  display: inline-block;
+  margin-right: 5%;
+}
+
+div.textbox {
+    height: 70vh;
+}
+
+textarea {
+  overflow-y: scroll;
+  height: 100%;
+  resize: none;
+}
