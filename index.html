@@ -131,7 +131,6 @@
 								// $("#answer").focus();
 								// document.execCommand("paste");
 								const text=await navigator.clipboard.readText();
-								console.log(text);
 								var $t=$(document.getElementById("answer"));
 								insertAtCursor(document.getElementById("answer"),text);
 							}
