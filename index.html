@@ -15,6 +15,11 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="style.css">
 
+	<!-- Initialize variable for cut, paste and undo -->
+	<script>
+		var clipboardText = "";
+	</script>
+
 	<meta charset="UTF-8">
 	<title>rendum practice page</title>
 </head>
@@ -84,16 +89,11 @@
 				<div class="col s6 offset-s6">
 					<button id="cut" class="waves-effect waves-light btn">Cut</button>
 					<script>
-
 						$("#cut").click(
 							function (e) {
-								var text = "";
-								console.log("nyan");
-								if (window.getSelection) {
-									console.log("meow");
-									text = window.getSelection().toString();
-									document.execCommand("cut", false, "");
-								}
+								clipboardText = $("#answer").val();
+								$("#answer").select();
+								document.execCommand("cut");
 							}
 						)
 					</script>
