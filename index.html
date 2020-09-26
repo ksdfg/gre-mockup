@@ -91,22 +91,51 @@
 					<script>
 						$("#cut").click(
 							function (e) {
-								clipboardText = $("#answer").val();
-								$("#answer").select();
-								document.execCommand("cut");
+								// clipboardText = $("#answer").val();
+								// $("#answer").select();
+								// document.execCommand("cut");
+								if(window.getSelection){
+									clipboardText=window.getSelection().toString();
+									document.execCommand("cut");
+								}
 							}
 						)
 					</script>
 
 					<button id="paste" class="waves-effect waves-light btn">Paste</button>
 					<script>
+						function insertAtCursor(myField,myValue)
+						{
+							//IE support
+						    if (document.selection) {
+						        myField.focus();
+						        sel = document.selection.createRange();
+						        sel.text = myValue;
+						    }
+						    //MOZILLA and others
+						    else if (myField.selectionStart || myField.selectionStart == '0') {
+						        var startPos = myField.selectionStart;
+						        var endPos = myField.selectionEnd;
+						        myField.value = myField.value.substring(0, startPos)
+						            + myValue
+						            + myField.value.substring(endPos, myField.value.length);
+						        myField.selectionStart = startPos + myValue.length;
+						        myField.selectionEnd = startPos + myValue.length;
+						    } else {
+						        myField.value += myValue;
+						    }
+						}
 						$("#paste").click(
-							function (e) {
-								clipboardText = $("#answer").val();
-								$("#answer").focus();
-								document.execCommand("paste");
+							async function (e) {
+								// clipboardText = $("#answer").val();
+								// $("#answer").focus();
+								// document.execCommand("paste");
+								const text=await navigator.clipboard.readText();
+								console.log(text);
+								var $t=$(document.getElementById("answer"));
+								insertAtCursor(document.getElementById("answer"),text);
 							}
-						)
+						);
 					</script>
 
 					<button id="undo" class="waves-effect waves-light btn">Undo</button>
@@ -115,7 +144,7 @@
 							function (e) {
 								$("#answer").val(clipboardText);
 							}
-						)
+						);
 					</script>
 				</div>
 			</div>
