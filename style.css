@@ -1,10 +1,10 @@
-h5 {
+div.input-field {
   display: inline-block;
   margin-right: 5%;
 }
 
 div.textbox {
-    height: 70vh;
+  height: 70vh;
 }
 
 textarea {
