@@ -101,15 +101,22 @@
 					<button id="paste" class="waves-effect waves-light btn">Paste</button>
 					<script>
 						$("#paste").click(
-							async function (e) {
-								console.log("woof")
-								const text = await navigator.clipboard.readText();
-								document.getElementById("answer").value = text;
+							function (e) {
+								clipboardText = $("#answer").val();
+								$("#answer").focus();
+								document.execCommand("paste");
 							}
 						)
 					</script>
 
 					<button id="undo" class="waves-effect waves-light btn">Undo</button>
+					<script>
+						$("#undo").click(
+							function (e) {
+								$("#answer").val(clipboardText);
+							}
+						)
+					</script>
 				</div>
 			</div>
 
